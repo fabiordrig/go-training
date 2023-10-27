@@ -20,4 +20,7 @@ revert:
 	migrate -path migrations -database "postgres://$(DB_USER):$(DB_PASS)@localhost:5432/$(DB_NAME)?sslmode=disable" -verbose down
 
 
-.PHONY: postgres createdb dropdb migrate revert
+sqlc:
+	sqlc generate
+
+.PHONY: postgres createdb dropdb migrate revert sqlc
