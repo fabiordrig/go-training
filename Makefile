@@ -14,13 +14,15 @@ dropdb:
 	@echo "Database dropped."
 
 migrate:
-	migrate -path migrations -database "postgres://$(DB_USER):$(DB_PASS)@localhost:5432/$(DB_NAME)?sslmode=disable" -verbose up
+	migrate -path db/migrations -database "postgres://$(DB_USER):$(DB_PASS)@localhost:5432/$(DB_NAME)?sslmode=disable" -verbose up
 
 revert:
-	migrate -path migrations -database "postgres://$(DB_USER):$(DB_PASS)@localhost:5432/$(DB_NAME)?sslmode=disable" -verbose down
-
+	migrate -path db/migrations -database "postgres://$(DB_USER):$(DB_PASS)@localhost:5432/$(DB_NAME)?sslmode=disable" -verbose down
 
 sqlc:
 	sqlc generate
 
-.PHONY: postgres createdb dropdb migrate revert sqlc
+test:
+	go test -v -cover ./...
+
+.PHONY: postgres createdb dropdb migrate revert sqlc test
