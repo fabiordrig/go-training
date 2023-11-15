@@ -12,8 +12,31 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+
+    env:
+      DB_USER: root
+      DB_PASS: root
+      DB_NAME: simple_bank_ci
+      CONTAINER_NAME: simple_bank_container
+
+    services:
+      postgres:
+        image: postgres:12
+        env:
+          POSTGRES_USER: ${{ env.DB_USER }}
+          POSTGRES_PASSWORD: ${{ env.DB_PASS }}
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout the code
+        uses: actions/checkout@v3
+
+      - name: Run migrations
+        run: make migrate
 
       - name: Set up Go
         uses: actions/setup-go@v4
