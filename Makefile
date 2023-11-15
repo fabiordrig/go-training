@@ -1,4 +1,4 @@
--include local.env
+-include .env.local
 
 postgres:
 	docker run --name $(CONTAINER_NAME) -p 5432:5432 -e POSTGRES_USER=$(DB_USER) -e POSTGRES_PASSWORD=$(DB_PASS) -d postgres:alpine
@@ -14,6 +14,7 @@ dropdb:
 	@echo "Database dropped."
 
 migrate:
+	@echo "Migrating database...$(DB_NAME) $(DB_USER) $(DB_PASS)"
 	migrate -path db/migrations -database "postgres://$(DB_USER):$(DB_PASS)@localhost:5432/$(DB_NAME)?sslmode=disable" -verbose up
 
 revert:
