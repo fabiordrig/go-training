@@ -1,4 +1,4 @@
--include .env.local
+-include app.env
 
 postgres:
 	docker run --name $(CONTAINER_NAME) -p 5432:5432 -e POSTGRES_USER=$(DB_USER) -e POSTGRES_PASSWORD=$(DB_PASS) -d postgres:alpine
