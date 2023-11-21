@@ -29,4 +29,7 @@ server:
 test:
 	go test -v -cover ./...
 
-.PHONY: postgres createdb dropdb migrate revert sqlc test
+mock:
+	mockgen -package mock_db -destination db/mock/store.go go-training/db/sqlc Store
+
+.PHONY: postgres createdb dropdb migrate revert sqlc test mock server

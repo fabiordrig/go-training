@@ -1,6 +1,7 @@
 package api
 
 import (
+	"database/sql"
 	db "go-training/db/sqlc"
 	"net/http"
 
@@ -50,6 +51,10 @@ func (server *Server) getAccount(ctx *gin.Context) {
 	account, err := server.store.GetAccount(ctx, int32(req.ID))
 
 	if err != nil {
+		if err == sql.ErrNoRows {
+			ctx.JSON(http.StatusNotFound, errorResponse(err))
+			return
+		}
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
 		return
 	}
